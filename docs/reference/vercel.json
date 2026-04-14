@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/admin/retention",
+      "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/admin/alerts",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/admin/sync-settlements",
+      "schedule": "7 * * * *"
+    }
+  ]
+}
