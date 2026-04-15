@@ -40,8 +40,7 @@ pnpm test:watch   # vitest in watch mode
 NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 SUPABASE_SERVICE_ROLE_KEY       # server-only, bypasses RLS
-ADMIN_USER_IDS                  # comma-separated Supabase user UUIDs (local dev)
-ADMIN_USER_ID_1, _2, …          # numbered alternative (Vercel); merged with CSV
+ADMIN_USER_IDS                  # comma-separated Supabase user UUIDs
 ```
 
 Template: `.env.example`. Local dev: `.env.local` (gitignored).
