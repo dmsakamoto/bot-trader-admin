@@ -33,6 +33,7 @@ pnpm test:watch   # vitest in watch mode
 - **Metrics:** `computeSharpe` (√252 annualized, takes cents), `aggregateDailyPnl`, `trailingPnl`, `pctReturn`. Settlements filtered to `origin IN ('bot','pending')` everywhere.
 - **Trading config:** `bot_trading_config` has 2 rows per account (`status: 'draft' | 'active'`). All queries filter `.eq('status', 'active')`. Config rendering uses `TRADING_CONFIG_SCHEMA` (14 groups × 69 UI-exposed vars) for labels/units.
 - **Version history:** `bot_config_versions.diff` is pre-computed (`Record<string, {from, to}>`) — we read it directly, no client-side diffing.
+- **Error monitoring:** Sentry (`@sentry/nextjs`) with global error boundary at `app/global-error.tsx`. Tunnel route at `/monitoring` (set via `withSentryConfig` in `next.config.ts`) proxies events to Sentry so ad-blockers don't drop them. SDK no-ops when `NEXT_PUBLIC_SENTRY_DSN` is unset.
 
 ## Env vars
 
@@ -41,6 +42,8 @@ NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 SUPABASE_SERVICE_ROLE_KEY       # server-only, bypasses RLS
 ADMIN_USER_IDS                  # comma-separated Supabase user UUIDs
+NEXT_PUBLIC_SENTRY_DSN          # optional; enables Sentry when set
+SENTRY_AUTH_TOKEN               # optional; Vercel-only, enables source-map upload
 ```
 
 Template: `.env.example`. Local dev: `.env.local` (gitignored).
