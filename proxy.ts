@@ -4,7 +4,7 @@ import { isAdmin } from '@/lib/auth/admin';
 
 const PUBLIC_PATHS = ['/login', '/api/auth/callback', '/api/auth/signout'];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { response, user } = await updateSession(request);
   const path = request.nextUrl.pathname;
 
