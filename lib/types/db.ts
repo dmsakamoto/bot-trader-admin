@@ -7,8 +7,10 @@ export type Timestamp = string; // ISO 8601 string as returned by supabase-js
 
 export interface AccountRow {
   id: Uuid;
-  customer_name: string;
-  email: string | null;
+  user_id: Uuid;
+  label: string | null;
+  first_name: string | null;
+  last_name: string | null;
   created_at: Timestamp;
 }
 
@@ -17,10 +19,11 @@ export type InstanceStatus = 'running' | 'stopped' | 'error' | 'provisioning';
 export interface BotInstanceRow {
   id: Uuid;
   account_id: Uuid;
-  vps_ip: string | null;
-  vps_provider: string | null;
-  vps_region: string | null;
+  ip_address: string | null;
+  provider: string | null;
+  region: string | null;
   status: InstanceStatus;
+  server_label: string | null;
   created_at: Timestamp;
 }
 
@@ -28,9 +31,9 @@ export type BotStatus = 'running' | 'scan_only' | 'stopped';
 export type VolumeRegime = 'NORMAL' | 'ELEVATED' | 'SPIKE' | 'COOLDOWN' | 'RECOVERY';
 
 export interface BotHeartbeatRow {
-  id: Uuid;
+  id: number;
   account_id: Uuid;
-  created_at: Timestamp;
+  timestamp: Timestamp;
   status: BotStatus;
   volume_regime: VolumeRegime | null;
   signals_detected: number;
@@ -42,8 +45,11 @@ export interface BotHeartbeatRow {
 }
 
 export interface BotControlRow {
+  id?: Uuid;
   account_id: Uuid;
   kill_switch: boolean;
+  kill_switch_set_by?: string | null;
+  kill_switch_set_at?: Timestamp | null;
   updated_at: Timestamp;
 }
 
@@ -62,32 +68,33 @@ export interface BotConfigVersionRow {
 export type Origin = 'bot' | 'owner' | 'pending';
 
 export interface KalshiFillRow {
-  id: Uuid;
+  fill_id: string;
   account_id: Uuid;
   ticker: string;
   side: 'yes' | 'no';
   action: 'buy' | 'sell';
   contracts: number;
-  price_cents: number;
-  filled_time: Timestamp;
+  yes_price_cents: number;
+  no_price_cents: number;
+  fee_cents: number;
+  created_time: Timestamp;
   origin: Origin | null;
 }
 
 export interface KalshiSettlementRow {
-  id: Uuid;
   account_id: Uuid;
   ticker: string;
-  result: 'yes' | 'no';
+  market_result: string;
   pnl_cents: number;
   settled_time: Timestamp;
   origin: Origin | null;
 }
 
 export interface MarketScanRow {
-  id: Uuid;
+  id: number;
   account_id: Uuid;
   ticker: string;
-  created_at: Timestamp;
+  timestamp: Timestamp;
   signal_side: 'yes' | 'no' | null;
   edge: number | null;
   fair_value: number | null;

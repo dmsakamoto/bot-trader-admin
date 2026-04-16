@@ -57,34 +57,37 @@ export function ScansTable({ rows }: { rows: MarketScanRow[] }) {
           </Tr>
         </THead>
         <tbody>
-          {filtered.map((r) => (
-            <React.Fragment key={r.id}>
-              <Tr>
-                <Td className="mono text-xs">{format(new Date(r.created_at), 'MMM d HH:mm:ss')}</Td>
-                <Td className="mono text-xs">{r.ticker}</Td>
-                <Td>{r.signal_side ?? '—'}</Td>
-                <Td className="text-right mono">{r.edge?.toFixed(3) ?? '—'}</Td>
-                <Td className="text-right mono">{r.fair_value?.toFixed(3) ?? '—'}</Td>
-                <Td className="text-right mono">{r.base_fair_value?.toFixed(3) ?? '—'}</Td>
-                <Td className="text-right mono">{r.micro_edge_score?.toFixed(3) ?? '—'}</Td>
-                <Td className="text-right mono">{r.dynamic_edge_floor?.toFixed(3) ?? '—'}</Td>
-                <Td>{r.gate_result ?? '—'}</Td>
-                <Td className="text-xs">{r.closest_failing_gate ?? '—'}</Td>
-                <Td>
-                  <button className="text-xs text-blue-400 hover:underline" onClick={() => toggle(r.id)}>
-                    {expanded.has(r.id) ? 'hide' : 'gates'}
-                  </button>
-                </Td>
-              </Tr>
-              {expanded.has(r.id) && (
+          {filtered.map((r) => {
+            const idStr = String(r.id);
+            return (
+              <React.Fragment key={idStr}>
                 <Tr>
-                  <Td className="mono text-xs whitespace-pre" {...{ colSpan: 11 }}>
-                    {JSON.stringify(r.gate_values ?? {}, null, 2)}
+                  <Td className="mono text-xs">{format(new Date(r.timestamp), 'MMM d HH:mm:ss')}</Td>
+                  <Td className="mono text-xs">{r.ticker}</Td>
+                  <Td>{r.signal_side ?? '—'}</Td>
+                  <Td className="text-right mono">{r.edge?.toFixed(3) ?? '—'}</Td>
+                  <Td className="text-right mono">{r.fair_value?.toFixed(3) ?? '—'}</Td>
+                  <Td className="text-right mono">{r.base_fair_value?.toFixed(3) ?? '—'}</Td>
+                  <Td className="text-right mono">{r.micro_edge_score?.toFixed(3) ?? '—'}</Td>
+                  <Td className="text-right mono">{r.dynamic_edge_floor?.toFixed(3) ?? '—'}</Td>
+                  <Td>{r.gate_result ?? '—'}</Td>
+                  <Td className="text-xs">{r.closest_failing_gate ?? '—'}</Td>
+                  <Td>
+                    <button className="text-xs text-blue-400 hover:underline" onClick={() => toggle(idStr)}>
+                      {expanded.has(idStr) ? 'hide' : 'gates'}
+                    </button>
                   </Td>
                 </Tr>
-              )}
-            </React.Fragment>
-          ))}
+                {expanded.has(idStr) && (
+                  <Tr>
+                    <Td className="mono text-xs whitespace-pre" {...{ colSpan: 11 }}>
+                      {JSON.stringify(r.gate_values ?? {}, null, 2)}
+                    </Td>
+                  </Tr>
+                )}
+              </React.Fragment>
+            );
+          })}
         </tbody>
       </Table>
     </div>

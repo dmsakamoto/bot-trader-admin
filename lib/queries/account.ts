@@ -44,11 +44,11 @@ export async function getAccountDetail(accountId: string): Promise<AccountDetail
       db.from('bot_config_versions').select('*').eq('account_id', accountId)
         .order('deployed_at', { ascending: false }).returns<BotConfigVersionRow[]>(),
       db.from('bot_heartbeat').select('*').eq('account_id', accountId)
-        .order('created_at', { ascending: false }).limit(50).returns<BotHeartbeatRow[]>(),
+        .order('timestamp', { ascending: false }).limit(50).returns<BotHeartbeatRow[]>(),
       db.from('market_scans').select('*').eq('account_id', accountId)
-        .order('created_at', { ascending: false }).limit(100).returns<MarketScanRow[]>(),
+        .order('timestamp', { ascending: false }).limit(100).returns<MarketScanRow[]>(),
       db.from('kalshi_fills').select('*').eq('account_id', accountId)
-        .order('filled_time', { ascending: false }).limit(50).returns<KalshiFillRow[]>(),
+        .order('created_time', { ascending: false }).limit(50).returns<KalshiFillRow[]>(),
       db.from('kalshi_settlements').select('*').eq('account_id', accountId)
         .in('origin', ['bot', 'pending'])
         .gte('settled_time', thirtyOneDaysAgoIso)

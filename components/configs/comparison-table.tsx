@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { TRADING_CONFIG_SCHEMA } from '@/lib/config/schema';
 import { Table, THead, Tr, Th, Td } from '@/components/ui/table';
-import { fmtPct } from '@/lib/utils/format';
+import { fmtPct, accountDisplayName } from '@/lib/utils/format';
 import type { ConfigSummaryRow } from '@/lib/queries/configs';
 import type { TradingConfigRow } from '@/lib/types/tradingConfig';
 
@@ -41,7 +41,7 @@ export function ComparisonTable({ rows }: { rows: ConfigSummaryRow[] }) {
                 selected.includes(r.account.id)
                   ? 'bg-blue-900/50 border-blue-700'
                   : 'border-neutral-800 text-neutral-400'}`}>
-              {r.account.customer_name}
+              {accountDisplayName(r.account)}
             </button>
           ))}
         </div>
@@ -54,7 +54,7 @@ export function ComparisonTable({ rows }: { rows: ConfigSummaryRow[] }) {
           <THead>
             <Tr>
               <Th>Parameter</Th>
-              {selectedRows.map((r) => <Th key={r.account.id}>{r.account.customer_name}</Th>)}
+              {selectedRows.map((r) => <Th key={r.account.id}>{accountDisplayName(r.account)}</Th>)}
             </Tr>
           </THead>
           <tbody>

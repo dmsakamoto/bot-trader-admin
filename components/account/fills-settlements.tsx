@@ -27,16 +27,19 @@ export function FillsSettlements({
               <Th className="text-right">Contracts</Th><Th className="text-right">Price</Th><Th>Origin</Th></Tr>
           </THead>
           <tbody>
-            {fills.map((f) => (
-              <Tr key={f.id}>
-                <Td className="mono text-xs">{format(new Date(f.filled_time), 'MMM d HH:mm:ss')}</Td>
-                <Td className="mono text-xs">{f.ticker}</Td>
-                <Td>{f.side}</Td><Td>{f.action}</Td>
-                <Td className="text-right mono">{f.contracts}</Td>
-                <Td className="text-right mono">{(f.price_cents / 100).toFixed(2)}</Td>
-                <Td className="text-xs">{f.origin ?? '—'}</Td>
-              </Tr>
-            ))}
+            {fills.map((f) => {
+              const priceCents = f.side === 'yes' ? f.yes_price_cents : f.no_price_cents;
+              return (
+                <Tr key={f.fill_id}>
+                  <Td className="mono text-xs">{format(new Date(f.created_time), 'MMM d HH:mm:ss')}</Td>
+                  <Td className="mono text-xs">{f.ticker}</Td>
+                  <Td>{f.side}</Td><Td>{f.action}</Td>
+                  <Td className="text-right mono">{f.contracts}</Td>
+                  <Td className="text-right mono">{(priceCents / 100).toFixed(2)}</Td>
+                  <Td className="text-xs">{f.origin ?? '—'}</Td>
+                </Tr>
+              );
+            })}
           </tbody>
         </Table>
       ) : (
@@ -47,10 +50,10 @@ export function FillsSettlements({
           </THead>
           <tbody>
             {settlements.map((s) => (
-              <Tr key={s.id}>
+              <Tr key={`${s.account_id}-${s.ticker}`}>
                 <Td className="mono text-xs">{format(new Date(s.settled_time), 'MMM d HH:mm:ss')}</Td>
                 <Td className="mono text-xs">{s.ticker}</Td>
-                <Td>{s.result}</Td>
+                <Td>{s.market_result}</Td>
                 <Td className={`text-right mono ${s.pnl_cents >= 0 ? 'text-green-300' : 'text-red-300'}`}>
                   ${(s.pnl_cents / 100).toFixed(2)}
                 </Td>

@@ -6,10 +6,9 @@ import type { KalshiSettlementRow } from '@/lib/types/db';
 
 function s(settled_time: string, pnl_cents: number): KalshiSettlementRow {
   return {
-    id: Math.random().toString(36),
     account_id: 'acct',
     ticker: 'T',
-    result: 'yes',
+    market_result: 'yes',
     pnl_cents,
     settled_time,
     origin: 'bot',

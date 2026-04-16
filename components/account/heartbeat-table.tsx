@@ -19,7 +19,7 @@ export function HeartbeatTable({ rows }: { rows: BotHeartbeatRow[] }) {
         <tbody>
           {rows.map((r) => (
             <Tr key={r.id}>
-              <Td className="mono text-xs">{format(new Date(r.created_at), 'MMM d HH:mm:ss')}</Td>
+              <Td className="mono text-xs">{format(new Date(r.timestamp), 'MMM d HH:mm:ss')}</Td>
               <Td>{r.status}</Td>
               <Td>{r.volume_regime ?? '—'}</Td>
               <Td className="text-right mono">{r.signals_detected}</Td>

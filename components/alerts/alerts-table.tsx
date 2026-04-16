@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { format } from 'date-fns';
 import { Table, THead, Tr, Th, Td } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { accountDisplayName } from '@/lib/utils/format';
 import type { AlertRow } from '@/lib/queries/alerts';
 import type { AccountRow, AlertType } from '@/lib/types/db';
 
@@ -36,7 +37,7 @@ export function AlertsTable({
         <select className="bg-neutral-900 border border-neutral-800 rounded px-2 py-1 text-xs"
           value={sp.get('accountId') ?? ''} onChange={(e) => setParam('accountId', e.target.value || null)}>
           <option value="">All accounts</option>
-          {accounts.map((a) => <option key={a.id} value={a.id}>{a.customer_name}</option>)}
+          {accounts.map((a) => <option key={a.id} value={a.id}>{accountDisplayName(a)}</option>)}
         </select>
         <div className="flex gap-2 text-xs">
           {ALERT_TYPES.map((t) => (

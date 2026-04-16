@@ -1,5 +1,5 @@
 import { Table, THead, Tr, Th, Td } from '@/components/ui/table';
-import { fmtPct } from '@/lib/utils/format';
+import { fmtPct, accountDisplayName } from '@/lib/utils/format';
 import { getVarDef } from '@/lib/config/schema';
 import type { ConfigSummaryRow } from '@/lib/queries/configs';
 import type { TradingConfigRow } from '@/lib/types/tradingConfig';
@@ -32,7 +32,7 @@ export function SummaryTable({ rows }: { rows: ConfigSummaryRow[] }) {
       <tbody>
         {rows.map((r) => (
           <Tr key={r.account.id}>
-            <Td>{r.account.customer_name}</Td>
+            <Td>{accountDisplayName(r.account)}</Td>
             <Td className="mono">{r.config?.version ?? '—'}</Td>
             {KEYS.map((k) => (
               <Td key={k} className="mono text-xs">{readKey(r.config, k)}</Td>

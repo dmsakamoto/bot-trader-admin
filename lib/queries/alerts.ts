@@ -1,5 +1,6 @@
 import 'server-only';
 import { createServiceClient } from '@/lib/supabase/server';
+import { accountDisplayName } from '@/lib/utils/format';
 import type { AccountRow, AlertLogRow, AlertType } from '@/lib/types/db';
 
 export interface AlertRow extends AlertLogRow {
@@ -22,7 +23,7 @@ export async function getAlerts(filters: AlertFilters): Promise<{ rows: AlertRow
 
   const accountsQ = await db.from('accounts').select('*').returns<AccountRow[]>();
   if (accountsQ.error) throw accountsQ.error;
-  const nameById = new Map((accountsQ.data ?? []).map((a) => [a.id, a.customer_name]));
+  const nameById = new Map((accountsQ.data ?? []).map((a) => [a.id, accountDisplayName(a)]));
 
   let q = db.from('alert_log').select('*', { count: 'exact' })
     .order('created_at', { ascending: false })

@@ -29,7 +29,7 @@ export async function getFleetOverview(): Promise<FleetRow[]> {
     db.from('bot_instances').select('*').returns<BotInstanceRow[]>(),
     db.from('bot_heartbeat')
       .select('*')
-      .order('created_at', { ascending: false })
+      .order('timestamp', { ascending: false })
       .returns<BotHeartbeatRow[]>(),
     db.from('bot_control').select('*').returns<BotControlRow[]>(),
     // IMPORTANT: bot_trading_config has 2 rows per account (draft + active).

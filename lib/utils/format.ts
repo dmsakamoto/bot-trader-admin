@@ -65,3 +65,16 @@ export function fmtCentsSigned(cents: number): string {
   const sign = dollars >= 0 ? '+' : ''
   return `${sign}${dollarFmt.format(dollars)}`
 }
+
+/** Derive a human-readable customer/account name. */
+export function accountDisplayName(a: {
+  first_name?: string | null;
+  last_name?: string | null;
+  label?: string | null;
+  id: string;
+}): string {
+  const full = [a.first_name, a.last_name].filter(Boolean).join(' ').trim();
+  if (full) return full;
+  if (a.label) return a.label;
+  return a.id.slice(0, 8);
+}

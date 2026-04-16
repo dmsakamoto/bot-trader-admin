@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Table, THead, Tr, Th, Td } from '@/components/ui/table';
+import { accountDisplayName } from '@/lib/utils/format';
 import type { FleetRow } from '@/lib/queries/fleet';
 
 function heartbeatTone(hbIso: string | null | undefined): 'green' | 'yellow' | 'red' {
@@ -12,7 +13,7 @@ function heartbeatTone(hbIso: string | null | undefined): 'green' | 'yellow' | '
   return 'green';
 }
 function rowTone(r: FleetRow): 'red' | 'yellow' | 'green' | undefined {
-  const hbTone = heartbeatTone(r.heartbeat?.created_at);
+  const hbTone = heartbeatTone(r.heartbeat?.timestamp);
   if (hbTone === 'red') return 'red';
   if (r.instance?.status === 'error') return 'red';
   if (r.configMismatch) return 'red';
@@ -45,9 +46,9 @@ export function FleetTable({ rows }: { rows: FleetRow[] }) {
       </THead>
       <tbody>
         {rows.map((r) => {
-          const hbTone = heartbeatTone(r.heartbeat?.created_at);
+          const hbTone = heartbeatTone(r.heartbeat?.timestamp);
           const hbAge = r.heartbeat
-            ? formatDistanceToNowStrict(new Date(r.heartbeat.created_at)) + ' ago'
+            ? formatDistanceToNowStrict(new Date(r.heartbeat.timestamp)) + ' ago'
             : 'never';
           const deployedV = r.config?.version ?? '—';
           const actualV = r.heartbeat?.config_snapshot?.version ?? '—';
@@ -55,12 +56,12 @@ export function FleetTable({ rows }: { rows: FleetRow[] }) {
             <Tr key={r.account.id} tone={rowTone(r)}>
               <Td>
                 <Link href={`/accounts/${r.account.id}`} className="hover:underline">
-                  {r.account.customer_name}
+                  {accountDisplayName(r.account)}
                 </Link>
               </Td>
               <Td className="mono text-xs">
                 {r.instance
-                  ? `${r.instance.vps_ip ?? '—'} · ${r.instance.vps_provider ?? ''} ${r.instance.vps_region ?? ''}`
+                  ? `${r.instance.ip_address ?? '—'} · ${r.instance.provider ?? ''} ${r.instance.region ?? ''}`
                   : '—'}
               </Td>
               <Td><Badge tone={r.instance?.status === 'running' ? 'green' : r.instance?.status === 'error' ? 'red' : 'neutral'}>{r.instance?.status ?? '—'}</Badge></Td>
