@@ -54,25 +54,14 @@ Template: `.env.example`. Local dev: `.env.local` (gitignored).
 - `Th` / `Td` require `children`; for empty cells use `<Th>{' '}</Th>`.
 - Commit style: conventional commits (`feat:`, `chore:`, `fix:`, `test:`).
 
-## TODO (deferred from initial build)
+## TODO (deferred)
 
-**Auth UX polish:**
-- Replace raw `"Forbidden"` response in `middleware.ts` with a proper `/forbidden` route that has a sign-out button (non-admin users are currently stuck).
-- Add `?next=` return URL so deep links survive the login redirect (currently everyone lands on `/`).
-- Hide `<Nav>` on `/login` — currently signed-out users see the nav with links to protected pages.
-- Bounce already-signed-in admins away from `/login` (server-side check in the page).
-- Exclude `_next/data/*` in the middleware matcher to stop RSC-prefetch redirect noise.
+**Auth UX (minor remaining):**
+- Exclude `_next/data/*` in the proxy matcher to stop RSC-prefetch redirect noise.
 - `isAdmin(userId)` trims env entries but not the `userId` argument — theoretical hardening if ever relevant.
 
-**Framework upgrade:**
-- Next 16 is deprecating `middleware.ts` → `proxy.ts`. Rename the file and export from `proxy.ts`. Build currently emits a deprecation warning but works. Track Next 16.x changelog for the forcing version.
-
 **Backend reach:**
-- `TRADING_CONFIG_SCHEMA` exposes 69 vars but `TradingConfigRow` has ~73 typed columns. A handful of row columns are invisible in Account Detail / Config Comparison because they're not in the schema. Decide whether to surface them (expand schema) or leave hidden (ok for MVP).
 - Supabase queries don't paginate; they rely on `.limit(50)` / `.limit(100)` or date windows. If any scope expands beyond the MVP (e.g. more accounts, longer history), add pagination per bot-trader-web's convention.
-
-**Observability:**
-- No Sentry / error boundary yet. Consider adding `@sentry/nextjs` matching bot-trader-web before scale.
 
 ## What NOT to add
 
