@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 import { isAdmin } from '@/lib/auth/admin';
 
-const PUBLIC_PATHS = ['/login', '/api/auth/callback', '/api/auth/signout'];
+const PUBLIC_PATHS = ['/login', '/forbidden', '/api/auth/callback', '/api/auth/signout'];
 
 export async function proxy(request: NextRequest) {
   const { response, user } = await updateSession(request);
@@ -14,12 +14,21 @@ export async function proxy(request: NextRequest) {
 
   if (!user) {
     const url = request.nextUrl.clone();
+    const next = request.nextUrl.pathname + request.nextUrl.search;
     url.pathname = '/login';
+    url.search = ''; // clear any inherited query first
+    // Only encode meaningful paths (skip root to avoid /?next=/ noise)
+    if (next && next !== '/') {
+      url.searchParams.set('next', next);
+    }
     return NextResponse.redirect(url);
   }
 
   if (!isAdmin(user.id)) {
-    return new NextResponse('Forbidden', { status: 403 });
+    const url = request.nextUrl.clone();
+    url.pathname = '/forbidden';
+    url.search = '';
+    return NextResponse.redirect(url);
   }
 
   return response;
