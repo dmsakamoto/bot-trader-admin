@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes, ReactNode, TdHTMLAttributes, ThHTMLAttributes } from 'react';
 
 export function Table({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
@@ -10,8 +10,8 @@ export function Table({ children, className = '' }: { children: ReactNode; class
 export function THead({ children }: { children: ReactNode }) {
   return <thead className="bg-neutral-900 text-neutral-400 text-xs uppercase">{children}</thead>;
 }
-export function Th({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <th className={`text-left px-3 py-2 font-medium ${className}`}>{children}</th>;
+export function Th({ children, className = '', ...rest }: ThHTMLAttributes<HTMLTableCellElement> & { children: ReactNode; className?: string }) {
+  return <th className={`text-left px-3 py-2 font-medium ${className}`} {...rest}>{children}</th>;
 }
 export function Tr(
   { children, tone, ...rest }: HTMLAttributes<HTMLTableRowElement> & { tone?: 'red' | 'yellow' | 'green' },
@@ -22,6 +22,6 @@ export function Tr(
     tone === 'green' ? '' : '';
   return <tr className={`border-t border-neutral-800 ${toneClass}`} {...rest}>{children}</tr>;
 }
-export function Td({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <td className={`px-3 py-2 ${className}`}>{children}</td>;
+export function Td({ children, className = '', ...rest }: TdHTMLAttributes<HTMLTableCellElement> & { children: ReactNode; className?: string }) {
+  return <td className={`px-3 py-2 ${className}`} {...rest}>{children}</td>;
 }

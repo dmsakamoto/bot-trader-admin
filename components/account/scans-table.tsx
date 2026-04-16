@@ -80,7 +80,7 @@ export function ScansTable({ rows }: { rows: MarketScanRow[] }) {
                 </Tr>
                 {expanded.has(idStr) && (
                   <Tr>
-                    <Td className="mono text-xs whitespace-pre" {...{ colSpan: 11 }}>
+                    <Td className="mono text-xs whitespace-pre" colSpan={11}>
                       {JSON.stringify(r.gate_values ?? {}, null, 2)}
                     </Td>
                   </Tr>

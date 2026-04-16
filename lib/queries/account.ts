@@ -42,7 +42,7 @@ export async function getAccountDetail(accountId: string): Promise<AccountDetail
       db.from('bot_trading_config').select('*').eq('account_id', accountId)
         .eq('status', 'active').maybeSingle<TradingConfigRow>(),
       db.from('bot_config_versions').select('*').eq('account_id', accountId)
-        .order('deployed_at', { ascending: false }).returns<BotConfigVersionRow[]>(),
+        .order('deployed_at', { ascending: false }).limit(100).returns<BotConfigVersionRow[]>(),
       db.from('bot_heartbeat').select('*').eq('account_id', accountId)
         .order('timestamp', { ascending: false }).limit(50).returns<BotHeartbeatRow[]>(),
       db.from('market_scans').select('*').eq('account_id', accountId)

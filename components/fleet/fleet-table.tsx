@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Table, THead, Tr, Th, Td } from '@/components/ui/table';
-import { accountDisplayName } from '@/lib/utils/format';
+import { accountDisplayName, fmtCents, fmtPct } from '@/lib/utils/format';
 import type { FleetRow } from '@/lib/queries/fleet';
 
 function heartbeatTone(hbIso: string | null | undefined): 'green' | 'yellow' | 'red' {
@@ -22,9 +22,6 @@ function rowTone(r: FleetRow): 'red' | 'yellow' | 'green' | undefined {
   if (regime === 'SPIKE' || regime === 'COOLDOWN') return 'yellow';
   return 'green';
 }
-const fmtCents = (c: number) => `$${(c / 100).toFixed(2)}`;
-const fmtPct = (p: number) => `${(p * 100).toFixed(2)}%`;
-
 export function FleetTable({ rows }: { rows: FleetRow[] }) {
   return (
     <Table>

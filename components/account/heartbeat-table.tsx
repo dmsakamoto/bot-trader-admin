@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { Table, THead, Tr, Th, Td } from '@/components/ui/table';
+import { fmtCents } from '@/lib/utils/format';
 import type { BotHeartbeatRow } from '@/lib/types/db';
 
 export function HeartbeatTable({ rows }: { rows: BotHeartbeatRow[] }) {
@@ -23,10 +24,8 @@ export function HeartbeatTable({ rows }: { rows: BotHeartbeatRow[] }) {
               <Td>{r.status}</Td>
               <Td>{r.volume_regime ?? '—'}</Td>
               <Td className="text-right mono">{r.signals_detected}</Td>
-              <Td className="text-right mono">${(r.open_exposure_cents / 100).toFixed(2)}</Td>
-              <Td className="text-right mono">
-                {r.daily_pnl_cents == null ? '—' : `$${(r.daily_pnl_cents / 100).toFixed(2)}`}
-              </Td>
+              <Td className="text-right mono">{fmtCents(r.open_exposure_cents)}</Td>
+              <Td className="text-right mono">{fmtCents(r.daily_pnl_cents)}</Td>
               <Td className="text-xs">
                 {r.fail_safe_status ?? '—'}
                 {r.fail_safe_reason ? ` · ${r.fail_safe_reason}` : ''}

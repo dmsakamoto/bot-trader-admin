@@ -83,7 +83,7 @@ export function ComparisonTable({ rows }: { rows: ConfigSummaryRow[] }) {
             {TRADING_CONFIG_SCHEMA.map((g) => (
               <React.Fragment key={g.id}>
                 <Tr>
-                  <Td {...{ colSpan: selectedRows.length + 1 }} className="text-xs uppercase text-neutral-500 bg-neutral-900/60">
+                  <Td colSpan={selectedRows.length + 1} className="text-xs uppercase text-neutral-500 bg-neutral-900/60">
                     {g.label}
                   </Td>
                 </Tr>

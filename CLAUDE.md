@@ -27,7 +27,7 @@ pnpm test:watch   # vitest in watch mode
 
 ## Architecture
 
-- **Auth:** Supabase auth on `/login` (anon key, client-side) + root `middleware.ts` gate that checks `user.id` against `ADMIN_USER_IDS` env var. Non-admins get 403.
+- **Auth:** Supabase auth on `/login` (anon key, client-side) + root `proxy.ts` gate that checks `user.id` against `ADMIN_USER_IDS` env var. Non-admins get 403.
 - **Data:** All reads go through `lib/queries/*` using `createServiceClient()` (service-role key, bypasses RLS). Never import service-role client from client components — `lib/supabase/server.ts` enforces this with `import 'server-only'`.
 - **Pages:** `/` Fleet Overview → `/accounts/[id]` Account Detail → `/configs` Config Comparison → `/alerts`.
 - **Metrics:** `computeSharpe` (√252 annualized, takes cents), `aggregateDailyPnl`, `trailingPnl`, `pctReturn`. Settlements filtered to `origin IN ('bot','pending')` everywhere.

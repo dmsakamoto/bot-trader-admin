@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { Table, THead, Tr, Th, Td } from '@/components/ui/table';
+import { fmtCents } from '@/lib/utils/format';
 import type { KalshiFillRow, KalshiSettlementRow } from '@/lib/types/db';
 
 export function FillsSettlements({
@@ -50,12 +51,12 @@ export function FillsSettlements({
           </THead>
           <tbody>
             {settlements.map((s) => (
-              <Tr key={`${s.account_id}-${s.ticker}`}>
+              <Tr key={`${s.ticker}-${s.settled_time}`}>
                 <Td className="mono text-xs">{format(new Date(s.settled_time), 'MMM d HH:mm:ss')}</Td>
                 <Td className="mono text-xs">{s.ticker}</Td>
                 <Td>{s.market_result}</Td>
                 <Td className={`text-right mono ${s.pnl_cents >= 0 ? 'text-green-300' : 'text-red-300'}`}>
-                  ${(s.pnl_cents / 100).toFixed(2)}
+                  {fmtCents(s.pnl_cents)}
                 </Td>
                 <Td className="text-xs">{s.origin ?? '—'}</Td>
               </Tr>

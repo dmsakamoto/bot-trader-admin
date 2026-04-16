@@ -19,6 +19,7 @@ export function AlertsTable({
   function setParam(k: string, v: string | null) {
     const next = new URLSearchParams(sp);
     if (v == null || v === '') next.delete(k); else next.set(k, v);
+    if (k !== 'page') next.delete('page');
     router.push(`/alerts?${next.toString()}`);
   }
 

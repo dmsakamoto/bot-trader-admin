@@ -1,4 +1,4 @@
-import { fmtTime } from '@/lib/utils/format';
+import { fmtTime, fmtCents } from '@/lib/utils/format';
 import { TRADING_CONFIG_SCHEMA, getVarDef } from '@/lib/config/schema';
 import type { TradingConfigRow } from '@/lib/types/tradingConfig';
 
@@ -6,7 +6,7 @@ function renderValue(key: string, v: unknown): string {
   if (v === null || v === undefined) return '—';
   const def = getVarDef(key);
   if (def?.type === 'boolean') return v ? 'true' : 'false';
-  if (def?.unit === 'cents' && typeof v === 'number') return `$${(v / 100).toFixed(2)}`;
+  if (def?.unit === 'cents' && typeof v === 'number') return fmtCents(v);
   if (def?.unit === '%' && typeof v === 'number') return `${(v * 100).toFixed(2)}%`;
   if (typeof v === 'object') return JSON.stringify(v);
   return String(v);

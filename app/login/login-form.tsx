@@ -3,6 +3,17 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createBrowserSupabaseClient } from '@/lib/supabase/browser';
 
+function safeNext(raw: string | null): string {
+  if (!raw) return '/';
+  try {
+    const url = new URL(raw, window.location.origin);
+    if (url.origin !== window.location.origin) return '/';
+    return url.pathname + url.search;
+  } catch {
+    return '/';
+  }
+}
+
 export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,8 +29,7 @@ export function LoginForm() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) { setError(error.message); return; }
-    const nextParam = sp.get('next');
-    const target = (nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//')) ? nextParam : '/';
+    const target = safeNext(sp.get('next'));
     router.replace(target);
     router.refresh();
   }

@@ -23,12 +23,14 @@ export async function getFleetOverview(): Promise<FleetRow[]> {
   const db = createServiceClient();
   const now = new Date();
   const sevenDaysAgoIso = new Date(now.getTime() - 8 * 86_400_000).toISOString();
+  const thirtyMinAgoIso = new Date(now.getTime() - 30 * 60_000).toISOString();
 
   const [accounts, instances, heartbeats, controls, configs, settlements] = await Promise.all([
     db.from('accounts').select('*').returns<AccountRow[]>(),
     db.from('bot_instances').select('*').returns<BotInstanceRow[]>(),
     db.from('bot_heartbeat')
       .select('*')
+      .gte('timestamp', thirtyMinAgoIso)
       .order('timestamp', { ascending: false })
       .returns<BotHeartbeatRow[]>(),
     db.from('bot_control').select('*').returns<BotControlRow[]>(),

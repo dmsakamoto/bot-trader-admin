@@ -16,8 +16,9 @@ Auto-deploys from `main` via Vercel. Env vars managed in Vercel project settings
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `ADMIN_USER_IDS`
+- `NEXT_PUBLIC_SENTRY_DSN` (optional; enables Sentry error monitoring when set)
 
-**First-time setup:** Vercel dashboard → Add New → Project → import this repo → Framework: Next.js (auto-detected) → paste all four env vars → Deploy.
+**First-time setup:** Vercel dashboard → Add New → Project → import this repo → Framework: Next.js (auto-detected) → paste the required env vars (Sentry is optional) → Deploy.
 
 ## Docs
 

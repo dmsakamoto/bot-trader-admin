@@ -11,6 +11,5 @@ export default withSentryConfig(nextConfig, {
   // is set (Vercel can populate that later).
   silent: !process.env.CI,
   tunnelRoute: "/monitoring",
-  disableLogger: true,
   widenClientFileUpload: true,
 });

@@ -1,7 +1,5 @@
 import type { AccountDetail } from '@/lib/queries/account';
-
-const fmtCents = (c: number) => `$${(c / 100).toFixed(2)}`;
-const fmtPct = (p: number) => `${(p * 100).toFixed(2)}%`;
+import { fmtCents, fmtPct } from '@/lib/utils/format';
 
 function Card({ label, cents, pct }: { label: string; cents: number; pct: number }) {
   const pos = cents >= 0;

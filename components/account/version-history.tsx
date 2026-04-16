@@ -47,7 +47,7 @@ export function VersionHistory({ versions }: { versions: BotConfigVersionRow[] }
                 </Tr>
                 {expanded.has(v.id) && count > 0 && (
                   <Tr>
-                    <Td {...{ colSpan: 4 }}>
+                    <Td colSpan={4}>
                       <ul className="mono text-xs space-y-1">
                         {diffEntries.map(([key, change]) => {
                           const label = getVarDef(key)?.label ?? key;
